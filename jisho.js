@@ -34,6 +34,7 @@ module.exports = {
   },
 
   // TODO(cckelly) allow for fully qualified path in outputPath
+  // TODO(cckelly) validate input
   getAudio({
     keyword = '', 
     types = [], 
@@ -82,7 +83,6 @@ module.exports = {
   _downloadAudio(srcUrl, outputPath, filename, type) {
     let fullPath = this._resolveFullPath(outputPath, filename)
     fullPath += '.' + type
-    debug('fullPath', fullPath)
     request(srcUrl).pipe(fs.createWriteStream(fullPath))
   },
 
