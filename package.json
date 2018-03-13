@@ -1,0 +1,23 @@
+{
+  "name": "jisho",
+  "version": "1.0.0",
+  "description": "Node wrapper module for the Japanese dictionary jisho.org.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cckelly/jisho.git"
+  },
+  "keywords": [
+    "node",
+    "japanese"
+  ],
+  "author": "Charles Kelly <ccckelly21@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cckelly/jisho/issues"
+  },
+  "homepage": "https://github.com/cckelly/jisho#readme"
+}
