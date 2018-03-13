@@ -3,6 +3,7 @@
 const debug = require('debug')('jisho')
 const request = require('request')
 const fs = require('fs')
+const path = require('path')
 const { JSDOM } = require('jsdom')
 
 const kJishoUrl = 'http://jisho.org/search/'
@@ -15,10 +16,10 @@ module.exports = {
 
   search(keyword, cb) {
     if (!keyword) {
-      return new Error('Search requires a keyword')
+      return new Error('Search requires a keyword.')
     }
     if ('string' != typeof keyword) {
-      return new Error('Search requires a keyword of type string')
+      return new Error('Search requires a keyword of type string.')
     }
     
     const query = kSearchApiUrl + keyword
@@ -32,18 +33,61 @@ module.exports = {
     })
   },
 
-  getAudio(keyword, outputPath = '', filename = '') {
+  // TODO(cckelly) allow for fully qualified path in outputPath
+  getAudio({
+    keyword = '', 
+    types = [], 
+    outputPath = '', 
+    filename = ''
+    }, cb) {
+
     const query = kJishoUrl + keyword
+
+    if (!Array.isArray(types)) {
+      cb(new Error('Types must be an array.'))
+      return
+    }
+
+    const getMp3Source = 0 <= types.indexOf(kMp3Type)
+    const getOggSource = 0 <= types.indexOf(kOggType)
+
+    if (!getMp3Source && !getOggSource) {
+      cb(new Error('No valid source type provided.'))
+      return
+    }
+
     const req = request(query, (err, res, body) => {
       if (err) {
         cb(err)
       } else {
         const { document: doc } = new JSDOM(body).window
-        const src = this._getAudioSourceByType(doc, kMp3Type)
+
         const name = filename || keyword
-        request(src).pipe(fs.createWriteStream(name + '.mp3'))
+        if (getMp3Source) {
+          const source = this._getAudioSourceByType(doc, kMp3Type)
+          this._downloadAudio(source, outputPath, name, kMp3Type)
+        }
+        if (getOggSource) {
+          const source = this._getAudioSourceByType(doc, kOggType)
+          this._downloadAudio(source, outputPath, name, kOggType)
+        }
+
+        // TODO(cckelly) throw cb once audio files are done downloading
+        // TODO(cckelly) metadata about files saved to cb
+        cb(null, 'Audio successfully downloaded')
       }
     })
+  },
+
+  _downloadAudio(srcUrl, outputPath, filename, type) {
+    let fullPath = this._resolveFullPath(outputPath, filename)
+    fullPath += '.' + type
+    debug('fullPath', fullPath)
+    request(srcUrl).pipe(fs.createWriteStream(fullPath))
+  },
+
+  _resolveFullPath(outputPath, filename) {
+    return path.join(outputPath, filename)
   },
 
   _getAudioSourceByType(doc, type) {
@@ -51,7 +95,7 @@ module.exports = {
     if (kMp3Type === type) {
       src = doc.querySelector('audio > source[type=\'audio/mpeg\']').src
     } else if (kOggType === type) {
-      src = doc.querySelector('audio > source[type\'audio/ogg\']').src
+      src = doc.querySelector('audio > source[type=\'audio/ogg\']').src
     }
 
     if (src && !src.startsWith(kHttpPrefix)) {
