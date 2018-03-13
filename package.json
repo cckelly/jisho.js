@@ -19,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/cckelly/jisho/issues"
   },
-  "homepage": "https://github.com/cckelly/jisho#readme"
+  "homepage": "https://github.com/cckelly/jisho#readme",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "jsdom": "^11.6.2",
+    "request": "^2.85.0"
+  }
 }
