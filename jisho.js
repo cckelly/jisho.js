@@ -22,7 +22,8 @@ module.exports = {
       return new Error('Search requires a keyword of type string.')
     }
     
-    const query = kSearchApiUrl + keyword
+    let query = kSearchApiUrl + keyword
+    query = encodeURI(query)
 
     return await new Promise((resolve, reject) => {
       request(query, async (err, res, body) => {
@@ -116,7 +117,6 @@ module.exports = {
           }
 
           const name = filename || keyword
-          console.log('dom', dom)
           if (getMp3Source) {
             const source = this._getAudioSourceByType(dom, kMp3Type)
             await this._downloadAudio(source, outputPath, name, kMp3Type)
