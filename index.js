@@ -6,24 +6,24 @@ const jisho = require('./jisho.js')
 
 async function main() {
 
-  let result
-  try {
-    result = await jisho.search('みんぞく')
-    console.log(result)
-  } catch (err) {
-    console.log(err)
-  }
-
-  // let result 
+  // let result
   // try {
-  //   result = await jisho.getAudio({
-  //     keyword: 'people',
-  //     types: ['mp3']
-  //   })
+  //   result = await jisho.search('みんぞく')
   //   console.log(result)
   // } catch (err) {
-  //   console.log('err', err)
+  //   console.log(err)
   // }
+
+  let result 
+  try {
+    result = await jisho.getAudio({
+      keyword: '民族',
+      types: ['mp3'],
+    })
+    console.log(result)
+  } catch (err) {
+    console.log('err', err)
+  }
 
 }
 
