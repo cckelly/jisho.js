@@ -16,16 +16,16 @@ npm install jisho.js
 const jisho = require('jisho.js')
 ````
 
-Searching using the API.
-
 #### `const result = await jisho.search(keyword, getAudioUrl)`
+
+Search using the API.
 
 `keyword`: Keyword to get results for.<br/>
 `getAudioUrl`: Should audio download urls be included in results. Defaults to false.
 
-Downloading audio from Jisho. It's good to note that the audio will only be download if there is an exact match of the keyword searched.
-
 #### `const result = await jisho.getAudio(keyword, types, [outputPath], [fileName])`
+
+Download audio from Jisho. It's good to note that the audio will only be download if there is an exact match of the keyword searched.
 
 `keyword`: Keyword to search.<br/>
 `types`: Array of strings that include audio types to download. Can only be `mp3`, `ogg`, or both.<br/>
