@@ -2,7 +2,7 @@
   "name": "jisho",
   "version": "1.0.0",
   "description": "Node wrapper module for the Japanese dictionary jisho.org.",
-  "main": "index.js",
+  "main": "jisho.js",
   "scripts": {
     "start": "node ."
   },
