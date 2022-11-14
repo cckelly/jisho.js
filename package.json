@@ -23,7 +23,7 @@
   "dependencies": {
     "commander": "^2.15.0",
     "debug": "^3.1.0",
-    "jsdom": "^11.6.2",
+    "jsdom": "^16.5.0",
     "request": "^2.85.0"
   }
 }
